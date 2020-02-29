@@ -13,7 +13,6 @@ int main(){
   b.insertRec(5);
   b.insertRec(2);
   b.insertRec(3);
-  Node *n = findNode()
 
   return 0;
 }
