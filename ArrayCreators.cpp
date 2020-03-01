@@ -10,18 +10,18 @@ Function implementations of array generators
 //returns an array w/ random numbers of size n
 int* getRandomArray(int n){
   //creates array to return
-  int *arr = (int*)calloc(n, sizeof(int));
+  int *arr = (int*)malloc(sizeof(int) * n);
 
   //creates set to store unique random numbers and populates it
   std::unordered_set<int> uniqueNums;
-  while(uniqueNums.size() != n){
+  while(uniqueNums.size() < n){
     uniqueNums.insert(rand());
   }
 
   //populates array w/ random numbers
   int i;
   std::unordered_set<int>::iterator itr = uniqueNums.begin();
-  for(i = 0; i < n; i++, itr++){
+  for(i = 0; i < 1; i++, itr++){
     arr[i] = *itr;
   }
 
@@ -49,13 +49,4 @@ void printArray(int *arr, int n){
     printf("%d ", arr[i]);
   }
   printf("\n");
-}
-
-int main(){
-  //creates random and sorted array and prints
-  int *random = getRandomArray(5);
-  printArray(random, 5);
-  int *sorted = getSortedArray(5);
-  printArray(sorted, 5);
-  return 0;
 }

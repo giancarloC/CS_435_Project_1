@@ -1,18 +1,14 @@
 /*
 Written by Giancarlo Calle
-AVL Tree Class
+Binary Search Tree Class
 */
 
+#ifndef BST_H
+#define BST_H
 #include <stdio.h>
+#include "Node.h"
 
-struct Node{
-  int data;
-  Node *parent;
-  Node *left;
-  Node *right;
-};
-
-class AVL{
+class BST{
   public:
     Node *root;
 
@@ -33,51 +29,39 @@ class AVL{
     Node* findMaxIter();
 
     //constructor
-    AVL(){
+    BST(){
       root = NULL;
     }
 
     //other methods
-    void printAVL();
+    void printBST();
     void printRoot(){
       printf("Root is %d\n", root->data);
     };
 
   private:
-    //AVL rotation methods
-    void rotationR(Node *a);
-    void rotationL(Node *a);
+    //general helper methods
+    Node* createNode(int val);
+    void addNodeLeft(Node *parentNode, int val);
+    void addNodeRight(Node *parentNode, int val);
 
     //recursive helpers
-    int heightRec(Node *node);
-    int bfRec(Node *node);
-    void balanceRec(Node *node);
+    void printHelper(Node *node);
     void insertRecHelper(Node *curr, int val);
     Node* rightMostNode(Node *node);
     Node* leftMostNode(Node *node);
     Node* biggerParent(Node *node, int val);
     Node* smallerParent(Node *node, int val);
     Node* findNode(Node *curr, int val);
-    void balanceUpRec(Node *node);
     void deleteNode(Node *node);
 
-    //iterative helpers
-    int heightIter(Node *node);
-    int bfIter(Node *node);
-    void balanceIter(Node *node);
+    //iterative helper methods
     Node* rightMostNodeIter(Node *node);
     Node* leftMostNodeIter(Node *node);
     Node* biggerParentIter(Node *node, int val);
     Node* smallerParentIter(Node *node, int val);
     Node* findNodeIter(Node *curr, int val);
-    void balanceUpIter(Node *node);
 
-
-    //other helpers
-    void printHelper(Node *node);
-    Node *createNode(int val);
-    void addNodeLeft(Node *parentNode, int val);
-    void addNodeRight(Node *parentNode, int val);
-    int isRoot(Node *node);
-    int isLeftChild(Node *node);
 };
+
+#endif

@@ -10,7 +10,7 @@ Binary Search Tree Method Implementations
 #define TRUE 1
 
 //helper function for printBST()
-void printHelper(Node *node){
+void BST::printHelper(Node *node){
   if(node == NULL)
     return;
   printHelper(node->left);
@@ -25,20 +25,22 @@ void BST::printBST(){
 }
 
 //creates node to be added
-Node* createNode(int val){
+Node* BST::createNode(int val){
   Node *node = (Node*)malloc(sizeof(Node));
   node->data = val;
   return node;
 }
 
-//adds node as a left or right child
-void addNodeLeft(Node *parentNode, int val){
+//adds node as a left child
+void BST::addNodeLeft(Node *parentNode, int val){
   //adds node to left child and adds parent pointer
   Node *node = createNode(val);
   parentNode->left = node;
   node->parent = parentNode;
 }
-void addNodeRight(Node *parentNode, int val){
+
+//adds node as a right child
+void BST::addNodeRight(Node *parentNode, int val){
   //adds node to left child and adds parent pointer
   Node *node = createNode(val);
   parentNode->right = node;
@@ -46,7 +48,7 @@ void addNodeRight(Node *parentNode, int val){
 }
 
 //recursive helper function for insertRec()
-void insertRecHelper(Node *curr, int val){
+void BST::insertRecHelper(Node *curr, int val){
   int valCurr = curr->data;
   if(val > valCurr){
     if(curr->right == NULL)
@@ -75,14 +77,14 @@ void BST::insertRec(int val){
 }
 
 //Finds the rightmost node
-Node* rightMostNode(Node *node){
+Node* BST::rightMostNode(Node *node){
   if(node->right == NULL)
     return node;
   return rightMostNode(node->right);
 }
 
 //Finds the leftmost node
-Node* leftMostNode(Node *node){
+Node* BST::leftMostNode(Node *node){
   if(node->left == NULL)
     return node;
   return leftMostNode(node->left);
@@ -103,7 +105,7 @@ Node* BST::findMaxRec(){
 }
 
 //finds parent with data bigger than the value
-Node* biggerParent(Node *node, int val){
+Node* BST::biggerParent(Node *node, int val){
   if(node == NULL)
     return NULL;
   if(node->data > val)
@@ -112,7 +114,7 @@ Node* biggerParent(Node *node, int val){
 }
 
 //finds parent with data smaller than the value
-Node* smallerParent(Node *node, int val){
+Node* BST::smallerParent(Node *node, int val){
   if(node == NULL)
     return NULL;
   if(node->data < val)
@@ -143,7 +145,7 @@ Node* BST::findPrevRec(Node *node){
 }
 
 //finds a node and returns it
-Node* findNode(Node *curr, int val){
+Node* BST::findNode(Node *curr, int val){
   if(curr == NULL)
     return NULL;
   else if(curr->data == val)
@@ -266,7 +268,7 @@ void BST::insertIter(int val){
 }
 
 //Finds the rightmost node
-Node* rightMostNodeIter(Node *node){
+Node* BST::rightMostNodeIter(Node *node){
   while(node->right != NULL){
     node = node->right;
   }
@@ -274,7 +276,7 @@ Node* rightMostNodeIter(Node *node){
 }
 
 //Finds the leftmost node
-Node* leftMostNodeIter(Node *node){
+Node* BST::leftMostNodeIter(Node *node){
   while(node->left != NULL){
     node = node->left;
   }
@@ -296,7 +298,7 @@ Node* BST::findMaxIter(){
 }
 
 //finds parent with data bigger than the value
-Node* biggerParentIter(Node *node, int val){
+Node* BST::biggerParentIter(Node *node, int val){
   while(node != NULL){
     if(node->data > val)
       return node;
@@ -306,7 +308,7 @@ Node* biggerParentIter(Node *node, int val){
 }
 
 //finds parent with data smaller than the value
-Node* smallerParentIter(Node *node, int val){
+Node* BST::smallerParentIter(Node *node, int val){
   while(node != NULL){
     if(node->data < val)
       return node;
@@ -337,7 +339,7 @@ Node* BST::findPrevIter(Node *node){
   return smallerParentIter(node->parent, node->data);
 }
 
-Node* findNodeIter(Node *curr, int val){
+Node* BST::findNodeIter(Node *curr, int val){
   while(curr != NULL){
     if(curr->data == val)
       return curr;
