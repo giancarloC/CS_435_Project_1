@@ -35,19 +35,21 @@ Node* AVL::createNode(int val){
 }
 
 //adds node as a left child
-void AVL::addNodeLeft(Node *parentNode, int val){
+Node* AVL::addNodeLeft(Node *parentNode, int val){
   //adds node to left child and adds parent pointer
   Node *node = createNode(val);
   parentNode->left = node;
   node->parent = parentNode;
+  return node;
 }
 
 //adds node as right child
-void AVL::addNodeRight(Node *parentNode, int val){
+Node* AVL::addNodeRight(Node *parentNode, int val){
   //adds node to left child and adds parent pointer
   Node *node = createNode(val);
   parentNode->right = node;
   node->parent = parentNode;
+  return node;
 }
 
 //returns if root or not
@@ -82,6 +84,7 @@ void AVL::rotationR(Node *a){
       parent->left = b;
     else
       parent->right = b;
+    b->parent = parent;
   }
 
   a->left = bRight;
@@ -111,11 +114,14 @@ void AVL::rotationL(Node *a){
       parent->left = b;
     else
       parent->right = b;
+    b->parent = parent;
   }
 
-  a->right = bLeft;
-  if(bLeft != NULL)
+  a->right = NULL;
+  if(bLeft != NULL){
     bLeft->parent = a;
+    a->right = bLeft;
+  }
   a->parent = b;
   b->left = a;
 }
@@ -152,35 +158,45 @@ void AVL::balanceRec(Node *node){
   //case if needs right rotation
   if(bf > 1){
     //checks if needs left rotation first
-    if(bfRec(node->left) < -1)
+    if(bfRec(node->left) <= -1){
       rotationL(node->left);
+    }
     rotationR(node);
   }
   //case if needs left rotation
   else{
     //checks if needs right rotation first
-    if(bfRec(node->right) > 1)
+    if(bfRec(node->right) >= 1){
       rotationR(node->right);
+    }
     rotationL(node);
   }
 }
 
+//ensures node and it's parents are balanced
+void AVL::balanceUpRec(Node *node){
+  if(node == NULL)
+    return;
+  balanceRec(node);
+  balanceUpRec(node->parent);
+}
+
 //recursive helper function for insertRec()
-void AVL::insertRecHelper(Node *curr, int val){
+Node* AVL::insertRecHelper(Node *curr, int val){
   int valCurr = curr->data;
+  Node *node;
   if(val > valCurr){
     if(curr->right == NULL)
-      addNodeRight(curr, val);
+      return addNodeRight(curr, val);
     else
-      insertRecHelper(curr->right, val);
+      return insertRecHelper(curr->right, val);
   }
   else{
     if(curr->left == NULL)
-      addNodeLeft(curr, val);
+      return addNodeLeft(curr, val);
     else
-      insertRecHelper(curr->left, val);
+      return insertRecHelper(curr->left, val);
   }
-  balanceRec(curr);
 }
 
 //inserts value onto AVL
@@ -192,7 +208,8 @@ void AVL::insertRec(int val){
   }
 
   //recursively goes through nodes
-  insertRecHelper(root, val);
+  Node *node = insertRecHelper(root, val);
+  balanceUpRec(node);
 }
 
 //Finds the rightmost node
@@ -273,14 +290,6 @@ Node* findNodeRec(Node *curr, int val){
     return findNodeRec(curr->right, val);
   else
     return findNodeRec(curr->left, val);
-}
-
-//ensures node and it's parents are balanced
-void AVL::balanceUpRec(Node *node){
-  if(node == NULL)
-    return;
-  balanceRec(node);
-  balanceUpRec(node->parent);
 }
 
 //deletes from AVL. Helper for deleteRec()

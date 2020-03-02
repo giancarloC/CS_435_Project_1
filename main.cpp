@@ -16,23 +16,18 @@ int main(){
 
   int n = 10;
 
-  int *arr = (int*)calloc(n, sizeof(int));
-  arr[0] = 0;
-  arr[10] = 2;
-  printf("%d\n", arr[1]);
-  /*
-  int* array = getSortedArray(n);
+  int *arr = getRandomArray(n);
 
   //populates AVL and BST
   int i, num;
   for(i = 0; i < n; i++){
-    num = array[i];
+    num = arr[i];
     a.insertRec(num);
     b.insertRec(num);
   }
 
   a.printAVL();
-  b.printBST();*/
+  b.printBST();
 
   return 0;
 }

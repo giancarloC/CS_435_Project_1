@@ -6,22 +6,25 @@ Function implementations of array generators
 #include <stdio.h>
 #include <stdlib.h>
 #include <unordered_set>
+#include <vector>
 
 //returns an array w/ random numbers of size n
 int* getRandomArray(int n){
   //creates array to return
-  int *arr = (int*)malloc(sizeof(int) * n);
+  int *arr = (int*)calloc(n, sizeof(int));
 
   //creates set to store unique random numbers and populates it
   std::unordered_set<int> uniqueNums;
   while(uniqueNums.size() < n){
-    uniqueNums.insert(rand());
+    uniqueNums.insert(rand() % n);
   }
+  printf("size of uniquenums: %lu\n", uniqueNums.size());
 
   //populates array w/ random numbers
   int i;
+  std::vector<int> v;
   std::unordered_set<int>::iterator itr = uniqueNums.begin();
-  for(i = 0; i < 1; i++, itr++){
+  for(i = 0; i < n; i++, itr++){
     arr[i] = *itr;
   }
 

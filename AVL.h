@@ -47,7 +47,7 @@ class AVL{
     int heightRec(Node *node);
     int bfRec(Node *node);
     void balanceRec(Node *node);
-    void insertRecHelper(Node *curr, int val);
+    Node* insertRecHelper(Node *curr, int val);
     Node* rightMostNode(Node *node);
     Node* leftMostNode(Node *node);
     Node* biggerParent(Node *node, int val);
@@ -71,8 +71,8 @@ class AVL{
     //other helpers
     void printHelper(Node *node);
     Node *createNode(int val);
-    void addNodeLeft(Node *parentNode, int val);
-    void addNodeRight(Node *parentNode, int val);
+    Node* addNodeLeft(Node *parentNode, int val);
+    Node* addNodeRight(Node *parentNode, int val);
     int isRoot(Node *node);
     int isLeftChild(Node *node);
 };
