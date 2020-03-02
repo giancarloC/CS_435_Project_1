@@ -28,6 +28,25 @@ int main(){
     levelBST = levelBST + b.insertIter(num);
   }
 
+  puts("From a random array...");
+  printf("In AVL, %d levels were traversed.\n", levelAVL);
+  printf("In BST, %d levels were traversed.\n", levelBST);
+
+  int *sortedArr = getSortedArray(n);
+
+  AVL a2;
+  BST b2;
+
+  //populates AVL and BST
+  levelAVL = 0;
+  levelBST = 0;
+  for(i = 0; i < n; i++){
+    num = sortedArr[i];
+    levelAVL = levelAVL + a2.insertIter(num);
+    levelBST = levelBST + b2.insertIter(num);
+  }
+
+  puts("From a sorted array...");
   printf("In AVL, %d levels were traversed.\n", levelAVL);
   printf("In BST, %d levels were traversed.\n", levelBST);
 
