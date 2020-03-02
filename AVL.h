@@ -20,8 +20,8 @@ class AVL{
     Node* findMaxRec();
 
     //iterative methods
-    void insertIter(int val);
-    void deleteIter(int val);
+    int insertIter(int val);
+    int deleteIter(int val);
     Node* findNextIter(Node *node);
     Node* findPrevIter(Node *node);
     Node* findMinIter();

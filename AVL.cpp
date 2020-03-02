@@ -384,23 +384,29 @@ int AVL::heightIter(Node *node){
   int maxHeight = 0;
   int height;
   while(queue.size() > 0){
-    std::tuple<Node*, int> popped = queue.front();
-    queue.pop();
-    node = std::get<0>(popped);
-    height = std::get<1>(popped);
 
-    //replaces height
-    if(height > maxHeight)
-      maxHeight = height;
+    //gets all the nodes in that level
+    int size = queue.size();
+    while(size > 0){
+      std::tuple<Node*, int> popped = queue.front();
+      queue.pop();
+      node = std::get<0>(popped);
+      height = std::get<1>(popped);
 
-    //adds other nodes to queue while incrementing height
-    if(node->left != NULL){
-      std::tuple<Node*, int> tup(node->left, height+1);
-      queue.push(tup);
-    }
-    if(node->right != NULL){
-      std::tuple<Node*, int> tup(node->right, height+1);
-      queue.push(tup);
+      //replaces height
+      if(height > maxHeight)
+        maxHeight = height;
+
+      //adds other nodes to queue while incrementing height
+      if(node->left != NULL){
+        std::tuple<Node*, int> tup(node->left, height+1);
+        queue.push(tup);
+      }
+      if(node->right != NULL){
+        std::tuple<Node*, int> tup(node->right, height+1);
+        queue.push(tup);
+      }
+      size--;
     }
 
   }
@@ -423,15 +429,17 @@ void AVL::balanceIter(Node *node){
   //case if it needs a right rotation
   if(bf > 1){
     //checks if it needs a left rotation first
-    if(bfIter(node->left) < -1)
+    if(bfIter(node->left) <= -1){
       rotationL(node->left);
+    }
     rotationR(node);
   }
   //case if needs left rotation
   else{
     //checks if needs right rotation first
-    if(bfIter(node->right) > 1)
+    if(bfIter(node->right) >= 1){
       rotationR(node->right);
+    }
     rotationL(node);
   }
 }
@@ -443,11 +451,13 @@ void AVL::balanceUpIter(Node *node){
   }
 }
 
-void AVL::insertIter(int val){
+int AVL::insertIter(int val){
   //checks if tree is empty (edge case)
+  int counter = 0; //counts how many levels we traverse
+
   if(root == NULL){
     root = createNode(val);
-    return;
+    return counter;
   }
 
   //loops through the nodes until it finds a place to insert
@@ -460,9 +470,11 @@ void AVL::insertIter(int val){
     if(val > valCurr){
       if(curr->right == NULL){
         addNodeRight(curr, val);
+        curr = curr->right;
         break;
       }
       else{
+        counter++;
         curr = curr->right;
         continue;
       }
@@ -471,9 +483,11 @@ void AVL::insertIter(int val){
     else{
       if(curr->left == NULL){
         addNodeLeft(curr, val);
+        curr = curr->left;
         break;
       }
       else{
+        counter++;
         curr = curr->left;
         continue;
       }
@@ -481,6 +495,7 @@ void AVL::insertIter(int val){
   }
 
   balanceUpIter(curr);
+  return counter;
 }
 
 //Finds the rightmost node
@@ -567,9 +582,20 @@ Node* AVL::findNodeIter(Node *curr, int val){
   return NULL;
 }
 
-void AVL::deleteIter(int val){
+int AVL::deleteIter(int val){
+  int counter = 0;
+
   //finds node to delete iteratively
-  Node *node = findNodeIter(root, val);
+  Node *node = root;
+  if(root == NULL)
+    return counter;
+  while(node->data != val){
+    if(val > node->data)
+      node = node->right;
+    else
+      node = node->left;
+    counter++;
+  }
 
   //variables used in loop
   int isRoot;
@@ -591,7 +617,7 @@ void AVL::deleteIter(int val){
       if(isRoot){
         free(node);
         root = NULL;
-        return;
+        return counter;
       }
       //changes parent pointer while removing pointer
       node = NULL;
@@ -602,7 +628,7 @@ void AVL::deleteIter(int val){
 
       free(node);
       balanceUpIter(parent);
-      return;
+      return counter;
     }
 
     //case if it has one leaf node
@@ -626,7 +652,7 @@ void AVL::deleteIter(int val){
       }
       free(node);
       balanceUpIter(toReplace);
-      return;
+      return counter;
     }
 
     //case if two leaf nodes
@@ -634,6 +660,7 @@ void AVL::deleteIter(int val){
     node->data = next->data;
     node = next;
   }
+  return counter;
 }
 
 /*end of file*/

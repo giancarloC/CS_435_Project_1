@@ -229,11 +229,13 @@ ITERATIVE METHODS BELOW
 ------------------------------------------------------
 */
 
-void BST::insertIter(int val){
+int BST::insertIter(int val){
+  int counter = 0;
+
   //checks if tree is empty (edge case)
   if(root == NULL){
     root = createNode(val);
-    return;
+    return counter;
   }
 
   //loops through the nodes until it finds a place to insert
@@ -250,6 +252,7 @@ void BST::insertIter(int val){
       }
       else{
         curr = curr->right;
+        counter++;
         continue;
       }
     }
@@ -261,10 +264,12 @@ void BST::insertIter(int val){
       }
       else{
         curr = curr->left;
+        counter++;
         continue;
       }
     }
   }
+  return counter;
 }
 
 //Finds the rightmost node
@@ -351,9 +356,25 @@ Node* BST::findNodeIter(Node *curr, int val){
   return NULL;
 }
 
-void BST::deleteIter(int val){
+int BST::deleteIter(int val){
+  int counter = 0; //counts how many levels are traversed
+
   //finds node to delete iteratively
-  Node *node = findNodeIter(root, val);
+  Node *node = root;
+  if(root == NULL)
+    return counter;
+  while(node != NULL){
+    if(node->data == val)
+      return counter;
+    else if(val > node->data){
+      node = node->right;
+      counter++;
+    }
+    else{
+      node = node->left;
+      counter++;
+    }
+  }
 
   //variables used in loop
   int isRoot;
@@ -374,7 +395,7 @@ void BST::deleteIter(int val){
       //simply removes node if it is root and no children
       if(isRoot){
         root = NULL;
-        return;
+        return counter;
       }
       //changes parent pointer while removing pointer
       node = NULL;
@@ -382,7 +403,7 @@ void BST::deleteIter(int val){
         parent->right = NULL;
       else
         parent->left = NULL;
-      return;
+      return counter;
     }
 
     //case if it has one leaf node
@@ -404,7 +425,7 @@ void BST::deleteIter(int val){
         else
           parent->left = toReplace;
       }
-      return;
+      return counter;
     }
 
     //case if two leaf nodes
@@ -412,6 +433,7 @@ void BST::deleteIter(int val){
     node->data = next->data;
     node = next;
   }
+  return counter;
 }
 
 /*end of file*/

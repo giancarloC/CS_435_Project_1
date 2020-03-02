@@ -14,7 +14,7 @@ int main(){
   AVL a;
   BST b;
 
-  int n = 10;
+  int n = 10000;
 
   int *arr = getRandomArray(n);
 
@@ -22,8 +22,8 @@ int main(){
   int i, num;
   for(i = 0; i < n; i++){
     num = arr[i];
-    a.insertRec(num);
-    b.insertRec(num);
+    a.insertIter(num);
+    b.insertIter(num);
   }
 
   a.printAVL();

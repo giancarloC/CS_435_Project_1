@@ -16,9 +16,8 @@ int* getRandomArray(int n){
   //creates set to store unique random numbers and populates it
   std::unordered_set<int> uniqueNums;
   while(uniqueNums.size() < n){
-    uniqueNums.insert(rand() % n);
+    uniqueNums.insert(rand());
   }
-  printf("size of uniquenums: %lu\n", uniqueNums.size());
 
   //populates array w/ random numbers
   int i;
